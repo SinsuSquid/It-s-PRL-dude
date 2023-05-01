@@ -45,8 +45,7 @@ def getData():
             for article in articles:
                 title = article.select_one('div > div > h5 > a')
                 title = re.search(r'">(.+)</a', str(title)).groups()[0]
-                title = re.sub(r'<span.+</span>','', title)
-                title = re.sub(r'<math.+</math>','', title)
+                title = re.sub(r'<(.+?)>','',title)
                 authors = article.select_one('div > div > h6.authors')
                 if (authors): 
                     authors = re.search(r'"authors">(.+)</h6>', str(authors)).groups()[0]

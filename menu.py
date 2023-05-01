@@ -1,4 +1,4 @@
-import scrap
+import scrap, ngram
 import os
 
 def logo():
@@ -43,8 +43,8 @@ def menu():
             scrap.run()  # go to database scrap menu
             continue
         elif (s == 1):
-            pass # go to word-by-year menu
-            break
+            ngram.run() # go to n-gram menu
+            continue
         elif (s == 2):
             pass # go to keyword-of-the-year menu
             break
@@ -54,7 +54,7 @@ def menu():
 def printMenu():
     print("\n--- Main Menu ---\n")
     print("\t[00]. Scrap database from web")
-    print("\t[01]. Search word-by-year")
+    print("\t[01]. Search n-gram")
     print("\t[02]. Find keyword-of-the-year")
     print("\t[03]. Exit")
 
