@@ -1,7 +1,7 @@
 try:
     from bs4 import BeautifulSoup
     import requests
-    import re, time, os
+    import re, os
     import pandas as pd
     from datetime import datetime
 except ImportError:
@@ -26,11 +26,8 @@ def createDatabase():
         print("You already have \'data.csv\' in your current directory.")
         answer = input("Do you want to renew the database? (y/n) : ")
         if answer not in ['yes','y']: return
-    startT = time.time()
     getIssueNum()
     getData()
-    endT = time.time()
-    print(endT - startT)
 
 def getData():
     print("Scaping article data from the web...")

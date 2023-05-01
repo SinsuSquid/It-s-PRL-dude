@@ -35,23 +35,28 @@ def ngramTrend():
     keywords = getKeywords()
     startYear, endYear = getYears()
     data = pd.read_csv('./data.csv', index_col = 0)
+    mod = getMode()
     for keyword in keywords:
         freq = {}
-        for yr in range(startYear, endYear):
+        for yr in range(startYear, endYear + 1):
             temp = data[data.Year == yr]
             freq[yr] = 0
             for title in temp.iloc[:,0]:
                 if (type(title) != str): continue
                 freq[yr] += len(re.findall(keyword, title, re.I))
-                # freq[yr] = freq[yr] / len(temp)
+            if (mod == 1): freq[yr] = freq[yr] / len(temp)
 
         temp = pd.Series(freq)
-        print(freq)
         plt.plot(temp.index, temp, label = keyword)
     plt.title(f"Trend change for keyword : \n{', '.join(keywords)}")
     plt.xlabel("Year"); plt.ylabel("Relative Frequency")
     plt.legend()
     plt.show()
+
+def getMode():
+    while(True):
+        mod = input("Select display method (0 : count, 1 : relative freq.) : ")
+        if (mod.isnumeric() and mod in ['0','1']): return int(mod)
 
 def getKeywords():
     temp = input("Keyword(s) (Separate by ',') : ")
