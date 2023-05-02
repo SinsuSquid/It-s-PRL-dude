@@ -49,7 +49,9 @@ def ngramTrend():
         temp = pd.Series(freq)
         plt.plot(temp.index, temp, label = keyword)
     plt.title(f"Trend change for keyword : \n{', '.join(keywords)}")
-    plt.xlabel("Year"); plt.ylabel("Relative Frequency")
+    plt.xlabel("Year"); 
+    if (mod == 1): plt.ylabel("Relative Frequency")
+    else: plt.ylabel("Counts")
     plt.legend()
     plt.show()
 
@@ -60,7 +62,7 @@ def getMode():
 
 def getKeywords():
     temp = input("Keyword(s) (Separate by ',') : ")
-    keywords = [word.replace(' ', '') for word in temp.split(',')]
+    keywords = [word.strip() for word in temp.split(',')]
     return keywords
 
 def getYears():
