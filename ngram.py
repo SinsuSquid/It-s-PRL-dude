@@ -3,9 +3,12 @@ try:
     import numpy as np
     import matplotlib.pyplot as plt
     import re, os
+    from collections import Counter
 except ImportError:
     print("\tProblem with importing BeautifulSoup and requests. Have you installed it?")
     exit(1)
+
+STOPWORDS = "a about above after again against all am an and any are aren't as at be because been before being below between both but by can't cannot could couldn't did didn't do does doesn't doing don't down during each few for from further had hadn't has hasn't have haven't having he he'd he'll he's her here here's hers herself him himself his how how's i i'd i'll i'm i've if in into is isn't it it's its itself let's me more most mustn't my myself no nor not of off on once only or other ought our ours ourselves out over own same shan't she she'd she'll she's should shouldn't so some such than that that's the their theirs them themselves then there there's these they they'd they'll they're they've this those through to too under until up very was wasn't we we'd we'll we're we've were weren't what what's when when's where where's which while who who's whom why why's with won't would wouldn't you you'd you'll you're you've your yours yourself yourselves [Phys. Rev. Lett. Publisher's Note: et al.".split(' ')
 
 def run():
     menu()
@@ -19,12 +22,44 @@ def menu():
             print("\n\tDOES NOT COMPUTE, TRY IT AGAIN.\n")
             continue 
         s = int(s)
-        if (s < 0 or s > 1):
+        if (s < 0 or s > 2):
             print("\n\tDOES NOT COMPUTE, TRY IT AGAIN.\n")
         elif (s == 0):
             ngramTrend()  # ngram trend search
+        elif (s == 1):
+            ngramOTY()  # ngram of the year
         else:
             return # go back to previous menu
+
+def ngramOTY():
+    startYear, endYear = getYears()
+    while(True):                           
+        N = input("Please set N for N-gram (either 2 and 3) ")
+        if (N.isnumeric() and N in ['2', '3']): N = int(N); break  
+    while(True):
+        howMany = input("How many results to display : ")
+        if (howMany.isnumeric()): howMany = int(howMany); break
+
+    data = pd.read_csv('./data.csv', index_col = 0)
+    for yr in range(startYear, endYear + 1):
+        temp = data[data.Year == yr].iloc[:,0]
+        ngrams = []
+        for title in temp:
+            splitted = re.split('[ ,]', title)
+            splitted = [word.lower() for word in splitted \
+                        if (word not in STOPWORDS and not word.isnumeric())]
+            if (N == 2): ngrams.extend([(splitted[i], splitted[i+1]) for i in range(len(splitted) - 2)])
+            if (N == 3): ngrams.extend([(splitted[i], splitted[i+1], splitted[i+2]) \
+                                        for i in range(len(splitted) - 3)])
+        common = Counter(ngrams).most_common(howMany)
+        print(f"{yr} : ")
+        if (N == 2): 
+            for j in range(howMany): print(f"{common[j][0][0]} {common[j][0][1]} - {common[j][1]}")
+        if (N == 3): 
+            for j in range(howMany): 
+                print(f"{common[j][0][0]} {common[j][0][1]} {common[j][0][2]} - {common[j][1]}")
+        print()
+
 
 def ngramTrend():
     if ("data.csv" not in os.listdir()):
@@ -77,7 +112,8 @@ def getYears():
 def printMenu():
     print("\n--- N-gram Search Menu  ---\n")
     print("\t[00]. Search Trend of N-gram")
-    print("\t[01]. Back to previous menu.")
+    print("\t[01]. Find N-gram of the year")
+    print("\t[02]. Back to previous menu.")
 
 if __name__ == '__main__':
     print(open('./kenobi','r').read())
