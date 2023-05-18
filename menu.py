@@ -1,9 +1,12 @@
 import scrap, ngram
 import os
+from rich import print
+from rich.panel import Panel
 
 def logo():
     logo =\
     """
+    [yellow]
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
       _____ _   _        _____  _____  _                _           _        
@@ -15,7 +18,7 @@ def logo():
                                                |/                            
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-                                                             Made by : SinsuSquid
+                                                             [bright_green]Made by : SinsuSquid
     """
 
     print(logo)
@@ -23,12 +26,12 @@ def logo():
 def menu():
     print("Welcome to \"It's PRL, dude.\"!\n")
     if 'data.csv' not in os.listdir('.'):
-        print("***** WARNING WARNING WARNING WARNING WARNING *****")
+        print("***** [red]WARNING WARNING WARNING WARNING WARNING[/red] *****")
         print("*                                                 *")
         print('* We couldn\'t find \'data.csv\' in this directory.  *')
         print('* Please proceed with scaping a new database.     *')
         print("*                                                 *")
-        print("***** WARNING WARNING WARNING WARNING WARNING *****")
+        print("***** [red]WARNING WARNING WARNING WARNING WARNING[/red] *****")
     while(True):
         printMenu()
         print("\n")
@@ -52,11 +55,14 @@ def menu():
             exit(0)
 
 def printMenu():
-    print("\n--- Main Menu ---\n")
-    print("\t[00]. Scrap database from web")
-    print("\t[01]. Search n-gram")
-    print("\t[02]. Find keyword-of-the-year")
-    print("\t[03]. Exit")
+    menu = \
+    """\n\t[green]---------- Main Menu ----------\n
+    [white]\t[00]. Scrap database from web
+    \t[01]. Search n-gram
+    \t[02]. Find keyword-of-the-year
+    \t[03]. Exit
+    """
+    print(Panel(menu))
 
 if __name__ == '__main__':
     print(open('./kenobi','r').read())

@@ -1,3 +1,5 @@
+from rich import print
+from rich.panel import Panel
 try:
     import pandas as pd
     import numpy as np
@@ -37,7 +39,7 @@ def ngramOTY():
         N = input("Please set N for N-gram (either 2 and 3) ")
         if (N.isnumeric() and N in ['2', '3']): N = int(N); break  
     while(True):
-        howMany = input("How many results to display : ")
+        howMany = input("How many results to display per year : ")
         if (howMany.isnumeric()): howMany = int(howMany); break
 
     data = pd.read_csv('./data.csv', index_col = 0)
@@ -52,13 +54,14 @@ def ngramOTY():
             if (N == 3): ngrams.extend([(splitted[i], splitted[i+1], splitted[i+2]) \
                                         for i in range(len(splitted) - 3)])
         common = Counter(ngrams).most_common(howMany)
-        print(f"{yr} : ")
+        print(f"\n{yr} : ")
+        showResult = ""
         if (N == 2): 
-            for j in range(howMany): print(f"{common[j][0][0]} {common[j][0][1]} - {common[j][1]}")
+            for j in range(howMany): showResult += f"{common[j][0][0]} {common[j][0][1]} - {common[j][1]}\n"
         if (N == 3): 
             for j in range(howMany): 
-                print(f"{common[j][0][0]} {common[j][0][1]} {common[j][0][2]} - {common[j][1]}")
-        print()
+                showResult += f"{common[j][0][0]} {common[j][0][1]} {common[j][0][2]} - {common[j][1]}\n"
+        print(Panel(showResult))
 
 
 def ngramTrend():
@@ -110,10 +113,13 @@ def getYears():
     return (startYear, endYear)
 
 def printMenu():
-    print("\n--- N-gram Search Menu  ---\n")
-    print("\t[00]. Search Trend of N-gram")
-    print("\t[01]. Find N-gram of the year")
-    print("\t[02]. Back to previous menu.")
+    menu = \
+    """\n\t[green]---------- N-gram Search Menu  ----------\n
+    [white]\t[00]. Search Trend of N-gram
+    \t[01]. Find N-gram of the year
+    \t[02]. Back to previous menu.
+    """
+    print(Panel(menu))
 
 if __name__ == '__main__':
     print(open('./kenobi','r').read())
