@@ -17,7 +17,12 @@ console = Console()
 
 PRL_ISSUE_LINK="https://journals.aps.org/prl/issues"
 
-month = {'January' : 1, 'February' : 2, 'March' : 3, 'April' : 4, 'May' : 5, 'June' : 6, 'July' : 7, 'August' : 8, 'September' : 9, 'October' : 10, 'November' : 11, 'December' : 12}
+month = {'January' : 1, 'February' : 2,
+         'March' : 3, 'April' : 4,
+         'May' : 5, 'June' : 6,
+         'July' : 7, 'August' : 8,
+         'September' : 9, 'October' : 10,
+         'November' : 11, 'December' : 12}
 
 num_issues = {}
 
@@ -25,8 +30,8 @@ def run():
     menu()
 
 def createDatabase():
-    print("\nWARNING : This process can take more than an hour.")
-    answer = input("Do you still want to proceed? (y/n) : ")
+    print("\n[red]WARNING[/red] : This process can take more than an hour.")
+    answer = input("\tDo you still want to proceed? (y/n) : ")
     if answer not in ['yes','y']: return 
     if ("data.csv" in os.listdir()):
         print()
@@ -37,7 +42,7 @@ def createDatabase():
     getData()
 
 def getData():
-    console.log("Scaping article data from the web...")
+    console.log("[green]Scaping article data from the web...")
     data = []
     lenVolume = len(num_issues.keys())
     for i in range(1,1+len(num_issues)):
@@ -53,10 +58,13 @@ def getData():
                     title = str(article.find('h5', attrs = {'class':'title'}))
                     title = re.sub("<.+?>","",title)
                 authors = article.find('h6', attrs = {'class':'authors'})
-                if (authors): 
-                    authors = authors.string
+                if (authors):
+                    authors = re.sub("<.+?>", "", str(authors))
+                    authors = re.sub("[(].+?[)]", "", authors)
                     authors = authors.replace('and',',').split(',')
                     authors = [e.strip() for e in authors if (e != ' ' and e != '')]
+                else:
+                    authors = []
                 pub_info = article.find('h6', attrs = {'class':'pub-info'})
                 pub_info = re.search(r'"pub-info">(.+?) <b>(\d+?)</b>, (\d+?) [(](\d+?)[)].+?Published(.+?)</h6>', str(pub_info)).groups()
                 pub_date = pub_info[-1].strip().split(' ')
@@ -67,6 +75,7 @@ def getData():
     headers = ['Title','Authors','Publication Info','Year','Month','Day']
     data = pd.DataFrame(data, columns = headers)
     data.to_csv('./data.csv')
+    console.log("[yellow]Thanks for waiting :D[/yellow]")
 
 def getIssueNum():
     console.log("[green]Obtaining number of issues per volume ... ")
@@ -123,8 +132,8 @@ def menu():
 
 def printMenu():
     menu = \
-    """\n\t---------- [green]Scrap database from web ----------\n
-    [white]\t[00]. Make a new database.
+    """\n\t---------- [green]Scrap database from web[/green] ----------\n
+    \t[00]. Make a new database.
     \t[01]. Check current database.
     \t[02]. Delete current database.
     \t[03]. Back to previous menu.

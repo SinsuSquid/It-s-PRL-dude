@@ -10,7 +10,8 @@ except ImportError:
     print("\tProblem with importing BeautifulSoup and requests. Have you installed it?")
     exit(1)
 
-STOPWORDS = "a about above after again against all am an and any are aren't as at be because been before being below between both but by can't cannot could couldn't did didn't do does doesn't doing don't down during each few for from further had hadn't has hasn't have haven't having he he'd he'll he's her here here's hers herself him himself his how how's i i'd i'll i'm i've if in into is isn't it it's its itself let's me more most mustn't my myself no nor not of off on once only or other ought our ours ourselves out over own same shan't she she'd she'll she's should shouldn't so some such than that that's the their theirs them themselves then there there's these they they'd they'll they're they've this those through to too under until up very was wasn't we we'd we'll we're we've were weren't what what's when when's where where's which while who who's whom why why's with won't would wouldn't you you'd you'll you're you've your yours yourself yourselves [Phys. Rev. Lett. Publisher's Note: et al.".split(' ')
+STOPWORDS = "a about above after again against all am an and any are aren't as at be because been before being below between both but by can't cannot could couldn't did didn't do does doesn't doing don't down during each few for from further had hadn't has hasn't have haven't having he he'd he'll he's her here here's hers herself him himself his how how's i i'd i'll i'm i've if in into is isn't it it's its itself let's me more most mustn't my myself no nor not of off on once only or other ought our ours ourselves out over own same shan't she she'd she'll she's should shouldn't so some such than that that's the their theirs them themselves then there there's these they they'd they'll they're they've this those through to too under until up very was wasn't we we'd we'll we're we've were weren't what what's when when's where where's which while who who's whom why why's with won't would wouldn't you you'd you'll you're you've your yours yourself yourselves [Phys. Rev. Lett. Publisher's Note: et al. two x ray dimensional".lower().split(' ')
+
 
 def run():
     menu()
@@ -47,9 +48,9 @@ def ngramOTY():
         temp = data[data.Year == yr].iloc[:,0]
         ngrams = []
         for title in temp:
-            splitted = re.split('[ ,]', title)
+            splitted = re.split('[ ,-]', title)
             splitted = [word.lower() for word in splitted \
-                        if (word not in STOPWORDS and not word.isnumeric())]
+                        if (word.lower() not in STOPWORDS and not word.isnumeric())]
             if (N == 2): ngrams.extend([(splitted[i], splitted[i+1]) for i in range(len(splitted) - 2)])
             if (N == 3): ngrams.extend([(splitted[i], splitted[i+1], splitted[i+2]) \
                                         for i in range(len(splitted) - 3)])
@@ -114,8 +115,8 @@ def getYears():
 
 def printMenu():
     menu = \
-    """\n\t[green]---------- N-gram Search Menu  ----------\n
-    [white]\t[00]. Search Trend of N-gram
+    """\n\t---------- [green]N-gram Search Menu[/green]  ----------\n
+    \t[00]. Search Trend of N-gram
     \t[01]. Find N-gram of the year
     \t[02]. Back to previous menu.
     """

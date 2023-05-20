@@ -56,8 +56,8 @@ def menu():
 
 def printMenu():
     menu = \
-    """\n\t[green]---------- Main Menu ----------\n
-    [white]\t[00]. Scrap database from web
+    """\n\t---------- [green]Main Menu[/green] ----------\n
+    \t[00]. Scrap database from web
     \t[01]. Search n-gram
     \t[02]. Find keyword-of-the-year
     \t[03]. Exit
