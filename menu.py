@@ -49,7 +49,7 @@ def menu():
             ngram.run() # go to n-gram menu
             continue
         elif (s == 2):
-            pass # go to keyword-of-the-year menu
+            pass # go to find BFF menu
             break
         else:
             exit(0)
@@ -59,7 +59,7 @@ def printMenu():
     """\n\t---------- [green]Main Menu[/green] ----------\n
     \t[00]. Scrap database from web
     \t[01]. Search n-gram
-    \t[02]. Find keyword-of-the-year
+    \t[02]. Find BFF
     \t[03]. Exit
     """
     print(Panel(menu))
