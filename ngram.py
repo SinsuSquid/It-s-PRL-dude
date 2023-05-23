@@ -35,6 +35,11 @@ def menu():
             return # go back to previous menu
 
 def ngramOTY():
+    if ("data.csv" not in os.listdir()):
+        print("There's no \'data.csv\' file in current directory.")
+        print("Please start from scrapping data.")
+        return
+
     startYear, endYear = getYears()
     while(True):                           
         N = input("Please set N for N-gram (either 2 and 3) ")
