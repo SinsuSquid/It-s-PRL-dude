@@ -62,9 +62,9 @@ def getData():
                     authors = re.sub("<.+?>", "", str(authors))
                     authors = re.sub("[(].+?[)]", "", authors)
                     authors = authors.replace('and',',').split(',')
-                    authors = [e.strip() for e in authors if (e != ' ' and e != '')]
+                    authors = ";".join([e.strip() for e in authors if (e != ' ' and e != '')])
                 else:
-                    authors = []
+                    authors = ""
                 pub_info = article.find('h6', attrs = {'class':'pub-info'})
                 pub_info = re.search(r'"pub-info">(.+?) <b>(\d+?)</b>, (\d+?) [(](\d+?)[)].+?Published(.+?)</h6>', str(pub_info)).groups()
                 pub_date = pub_info[-1].strip().split(' ')
