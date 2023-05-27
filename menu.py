@@ -1,4 +1,4 @@
-import scrap, ngram
+import scrap, ngram, BFF
 import os
 from rich import print
 from rich.panel import Panel
@@ -49,8 +49,8 @@ def menu():
             ngram.run() # go to n-gram menu
             continue
         elif (s == 2):
-            pass # go to find BFF menu
-            break
+            BFF.run()
+            continue
         else:
             exit(0)
 
