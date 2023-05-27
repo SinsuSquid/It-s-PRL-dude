@@ -34,7 +34,7 @@ def menu():
         elif (s == 0):
             findMyCousin()  # academical family
         elif (s == 1):
-            BFFOTY()  # ngram of the year
+            AOTY()  # author of the year
         else:
             return # go back to previous menu
 
@@ -115,6 +115,42 @@ def checkName(data):
                 return True
 
     return False
+
+def AOTY():
+    global console; global name
+
+    if ("data.csv" not in os.listdir()):
+        print("There's no \'data.csv\' file in current directory.")
+        print("Please start from scrapping data.")
+        return
+
+    data = pd.read_csv('./data.csv')
+
+    temp = input("From which year (default : 1958) : ")
+    startYear = int(temp) if (temp != '') else 1958
+    temp = input("Until which year (default : 2022) : ")
+    endYear = int(temp) if (temp != '') else 2022
+    temp = input("How many results per year? (default : 5) ")
+    howMany = int(temp) if (temp != '') else 5
+
+    for yr in range(startYear, endYear+1):
+        freq = {}
+        for authorline in data[data.Year == yr].Authors:
+            if (type(authorline) == float): continue
+            authors = authorline.split(';')
+            for author in authors:
+                if (len(author) < 4): continue
+                if author in freq.keys():
+                    freq[author] += 1
+                else:
+                    freq[author] = 1
+        top = Counter(freq).most_common(howMany)
+        string = [f"{name} : {count}" for name, count in top]
+        string = '\n'.join(string)
+        print(f"Year : {yr}")
+        print(Panel(string))
+
+
 
 def printMenu():
     menu = \
