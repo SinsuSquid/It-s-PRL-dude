@@ -156,7 +156,7 @@ def printMenu():
     menu = \
     """\n\t---------- [green]Find BFF Menu[/green] ----------\n
     \t[00]. Find academical cousins
-    \t[01]. Find BFF of the year
+    \t[01]. Find best authors of the year
     \t[02]. Back to previous menu
     """
     print(Panel(menu))
