@@ -1,4 +1,4 @@
-import scrap, ngram, BFF
+import scrap, ngram, network
 import os
 from rich import print
 from rich.panel import Panel
@@ -49,7 +49,7 @@ def menu():
             ngram.run() # go to n-gram menu
             continue
         elif (s == 2):
-            BFF.run()
+            network.run()
             continue
         else:
             exit(0)
@@ -57,9 +57,9 @@ def menu():
 def printMenu():
     menu = \
     """\n\t---------- [green]Main Menu[/green] ----------\n
-    \t[00]. Scrap database from web
-    \t[01]. Search n-gram
-    \t[02]. Find BFF
+    \t[00]. Data Scrap
+    \t[01]. About Topics
+    \t[02]. About Authors
     \t[03]. Exit
     """
     print(Panel(menu))

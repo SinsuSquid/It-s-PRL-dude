@@ -132,11 +132,11 @@ def menu():
 
 def printMenu():
     menu = \
-    """\n\t---------- [green]Scrap database from web[/green] ----------\n
-    \t[00]. Make a new database.
-    \t[01]. Check current database.
-    \t[02]. Delete current database.
-    \t[03]. Back to previous menu.
+    """\n\t---------- [green]Data Scrap Menu[/green] ----------\n
+    \t[00]. Make a new database
+    \t[01]. Check current database
+    \t[02]. Delete current database
+    \t[03]. Back to previous menu
     """
     print(Panel(menu))
 

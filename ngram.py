@@ -120,10 +120,10 @@ def getYears():
 
 def printMenu():
     menu = \
-    """\n\t---------- [green]N-gram Search Menu[/green]  ----------\n
+    """\n\t---------- [green]About Topics Menu[/green] ----------\n
     \t[00]. Search Trend of N-gram
     \t[01]. Find N-gram of the year
-    \t[02]. Back to previous menu.
+    \t[02]. Back to previous menu
     """
     print(Panel(menu))
 
