@@ -64,7 +64,7 @@ def getData():
                 if (authors):
                     authors = re.sub("<.+?>", "", str(authors))
                     authors = re.sub("[(].+?[)]", "", authors) # tag 및 () 안의 정보 삭제
-                    authors = authors.replace('and',',').split(',') # , 또는 and로 저자 분리
+                    authors = authors.replace('and ',',').split(',') # , 또는 and로 저자 분리
                     authors = ";".join([e.strip() for e in authors if (e != ' ' and e != '')]) # 문자열로 저장, 각 저자의 분리는 ;로 표시
                 else: # 저자 정보가 없는 논문 - editorial 등
                     authors = ""
