@@ -56,54 +56,58 @@ def findMyCousin():
 
     console.log("[green]Looking for his/her/its cousins ... ")
 
-    G = nx.Graph()
-    edge_weight = []
+    G = nx.Graph() # graph 초기화
 
     thisLevel = [name]
     level = 0
 
     while (level < maxLevel):
-        nextLevel = []
+        nextLevel = [] # 다음 단계에서 탐색할 저자 list 생성
         for i in range(len(thisLevel)):
             cand = thisLevel[i]
 
             names = []
             for author in track(data.Authors, description = f"Cousins of {cand}..."):
-                if (type(author) != float):
+                if (type(author) != float): # NaN은 skip
                     authorList = author.split(';')
 
-                    if cand in authorList:
+                    if cand in authorList: # 검색 대상이 작성한 논문 탐색
                         for a in authorList:
-                            if (a != cand): names.append(a)
+                            if (a != cand): names.append(a) # 본 저자 외 다른 이름 추가
 
-            freq = Counter(names)
+            freq = Counter(names) # 같이 작업한 저자의 빈도 저장
             console.log("[green]Creating a Graph ... ")
 
             # create graph
 
-            G.add_node(cand)
+            G.add_node(cand) # 원래 저자의 node 생성
 
             for n, f in freq.most_common(maxNum):
                 G.add_node(n)
-                G.add_edge(cand, n)
-                edge_weight.append(f)
-                nextLevel.append(n);
+                G.add_edge(cand, n, weight = f) # 원래 저자와 공동 저자의 edge 생성
+                nextLevel.append(n) # 새로운 저자는 다음 level에 저장
 
-            if (i == len(thisLevel) - 1):
+            if (i == len(thisLevel) - 1): # 현재 level이 끝나고 다음 level로 이동
                 thisLevel = nextLevel
 
         level += 1
     
-    color_map = ['red' if (i == 0) else 'blue' for i in range(len(G))]
+    color_map = ['red' if (i == 0) else 'blue' for i in range(len(G))] # 검색 대상만 붉은색으로 표시
+
+    edges,weights = zip(*nx.get_edge_attributes(G,'weight').items())
 
     nx.draw(G, with_labels = True,
-               node_color = color_map)
+               node_color = color_map,
+               edgelist = edges,
+               edge_color = weights,
+               edge_cmap = plt.cm.Blues,
+               width = 3.0)
     plt.show()
 
 def checkName(data):
     global name
 
-    name = input("Give me the name and I'll try to find his/her/its academic cousins! : ");
+    name = input("Give me the name! : ");
     
     for author in data.Authors:
         if (type(author) != float):

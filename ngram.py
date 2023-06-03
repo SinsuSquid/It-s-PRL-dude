@@ -50,15 +50,18 @@ def ngramOTY():
 
     data = pd.read_csv('./data.csv', index_col = 0)
     for yr in range(startYear, endYear + 1):
-        temp = data[data.Year == yr].iloc[:,0]
+        temp = data[data.Year == yr].iloc[:,0] # 해당 연도의 논문 제목
         ngrams = []
         for title in temp:
             splitted = re.split('[ ,-]', title)
+            # 숫자와 stopwords를 제외하고 word list 생성
             splitted = [word.lower() for word in splitted \
                         if (word.lower() not in STOPWORDS and not word.isnumeric())]
+            # list comprehension 이용해 ngram list 생성
             if (N == 2): ngrams.extend([(splitted[i], splitted[i+1]) for i in range(len(splitted) - 2)])
             if (N == 3): ngrams.extend([(splitted[i], splitted[i+1], splitted[i+2]) \
                                         for i in range(len(splitted) - 3)])
+        # ngram 상위 빈도 추출
         common = Counter(ngrams).most_common(howMany)
         print(f"\n{yr} : ")
         showResult = ""
@@ -83,12 +86,12 @@ def ngramTrend():
     for keyword in keywords:
         freq = {}
         for yr in range(startYear, endYear + 1):
-            temp = data[data.Year == yr]
-            freq[yr] = 0
+            temp = data[data.Year == yr] # 해당 연도의 논문
+            freq[yr] = 0 # 빈도 초기화
             for title in temp.iloc[:,0]:
-                if (type(title) != str): continue
-                freq[yr] += len(re.findall(keyword, title, re.I))
-            if (mod == 1): freq[yr] = freq[yr] / len(temp)
+                if (type(title) != str): continue # 제목 없는 논문 skip
+                freq[yr] += len(re.findall(keyword, title, re.I)) # 빈도 계산
+            if (mod == 1): freq[yr] = freq[yr] / len(temp) # 당해 년도의 상대빈도 계산
 
         temp = pd.Series(freq)
         plt.plot(temp.index, temp, label = keyword)
