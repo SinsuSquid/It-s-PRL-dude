@@ -92,7 +92,7 @@ def findMyCousin():
 
         level += 1
     
-    color_map = ['red' if (i == 0) else 'blue' for i in range(len(G))] # 검색 대상만 붉은색으로 표시
+    color_map = ['#D08770' if (i == 0) else '#5E81AC' for i in range(len(G))] # 검색 대상만 붉은색으로 표시
 
     edges,weights = zip(*nx.get_edge_attributes(G,'weight').items())
 
